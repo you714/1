@@ -43,3 +43,65 @@ else:
 image_data = st.camera_input("사진을 찍어보세요")
 if image_data:
     st.image(image_data)
+st.code("""
+import streamlit as st
+st.title('Hello World')
+""", language="python")
+
+import openai
+
+user_api_key = st.text_input("키를 입력해주세요.")
+
+from openai import OpenAI
+
+client = OpenAI(api_key = user_api_key)
+prompt = st.text_input("프롬프트를 입력해주세요.")
+
+completion = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user","content": prompt}]
+)
+st.markdown("### 💡 GPT의 답변:")
+st.write(completion.choices[0].message.content)
+
+# import streamlit as st
+# import openai
+
+# # 앱 타이틀
+# st.set_page_config(page_title="GPT-4o 대화 앱", page_icon="💬")
+# st.title("💬 GPT-4o와 대화해보세요!")
+# st.markdown("OpenAI GPT-4o 모델에게 질문하고 바로 답변을 받아보는 간단한 앱입니다.")
+
+# # API 키 입력
+# st.sidebar.header("🔐 API 설정")
+# # user_api_key=st.secrets["openai"]["api_key"]
+# user_api_key = st.sidebar.text_input("OpenAI API 키를 입력하세요", type="password")
+
+# # 프롬프트 입력
+# prompt = st.text_area("✍️ 프롬프트를 입력하세요", placeholder="예: 내일 날씨에 대해 알려줘")
+
+# # 버튼 클릭 시 GPT 호출
+# if st.button("🚀 GPT에게 물어보기"):
+#     if not user_api_key:
+#         st.warning("API 키를 입력해주세요!")
+#     elif not prompt:
+#         st.warning("프롬프트를 입력해주세요!")
+#     else:
+#         try:
+#             openai.api_key = user_api_key
+
+#             response = openai.ChatCompletion.create(
+#                 model="gpt-4o",
+#                 messages=[{"role": "user", "content": prompt}]
+#             )
+
+#             st.success("✅ GPT의 답변이 도착했어요!")
+#             st.markdown("### 💡 GPT의 답변:")
+#             st.write(response.choices[0].message["content"])
+
+#         except Exception as e:
+#             st.error(f"❗ 오류가 발생했어요: {e}")
+
+# # 하단 안내
+# st.markdown("---")
+# st.caption("ⓒ 2025. Streamlit GPT 앱 만들기 도움봇 🤖")
